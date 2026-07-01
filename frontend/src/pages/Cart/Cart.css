@@ -3,7 +3,7 @@
 }
 .cart-items-title{
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+    grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr;
     align-items: center;
     color: gray;
     font-size: max(1vw,12px);
@@ -22,6 +22,12 @@
 }
 .cart-items-item .cross{
     cursor: pointer;
+    color: #ff4a0e;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.cart-items-item .cross:hover {
+    color: #e53e00;
 }
 .cart-bottom{
     margin-top: 80px;

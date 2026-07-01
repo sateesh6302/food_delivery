@@ -2,13 +2,16 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
+import { localDb } from "../config/localDb.js";
 
 // login user
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await userModel.findOne({ email });
+    const user = global.useLocalDB
+      ? localDb.findOne("users", { email })
+      : await userModel.findOne({ email });
     if (!user) {
       return res.json({ success: false, message: "User Doesn't exist" });
     }
@@ -34,10 +37,12 @@ const createToken = (id) => {
 // register user
 
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   try {
     // checking user is already exist
-    const exists = await userModel.findOne({ email });
+    const exists = global.useLocalDB
+      ? localDb.findOne("users", { email })
+      : await userModel.findOne({ email });
     if (exists) {
       return res.json({ success: false, message: "User already exists" });
     }
@@ -58,16 +63,25 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new userModel({
-      name: name,
-      email: email,
-      password: hashedPassword,
-    });
-
-    const user = await newUser.save();
-    const role=user.role;
+    let user;
+    if (global.useLocalDB) {
+      user = localDb.save("users", {
+        name,
+        email,
+        password: hashedPassword,
+        role: role || "user"
+      });
+    } else {
+      const newUser = new userModel({
+        name,
+        email,
+        password: hashedPassword,
+        role: role || "user",
+      });
+      user = await newUser.save();
+    }
     const token = createToken(user._id);
-    res.json({ success: true, token, role});
+    res.json({ success: true, token, role: user.role });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });

@@ -1,14 +1,17 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { food_list as localFoodList } from "../assets/frontend_assets/assets";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "https://food-delivery-backend-5b6g.onrender.com";
-  const [token, setToken] = useState("");
+  const url = ["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:4000" : "https://food-delivery-backend-5b6g.onrender.com";
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [food_list, setFoodList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [admin, setAdmin] = useState(localStorage.getItem("admin") === "true");
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -58,11 +61,17 @@ const StoreContextProvider = (props) => {
   };
 
   const fetchFoodList = async () => {
-    const response = await axios.get(url + "/api/food/list");
-    if (response.data.success) {
-      setFoodList(response.data.data);
-    } else {
-      alert("Error! Products are not fetching..");
+    try {
+      const response = await axios.get(url + "/api/food/list");
+      if (response.data.success && response.data.data.length > 0) {
+        setFoodList(response.data.data);
+      } else {
+        console.log("Backend list empty or unsuccessful, loading local dishes.");
+        setFoodList(localFoodList);
+      }
+    } catch (error) {
+      console.log("Error fetching food list, falling back to local dishes:", error);
+      setFoodList(localFoodList);
     }
   };
 
@@ -78,9 +87,9 @@ const StoreContextProvider = (props) => {
   useEffect(() => {
     async function loadData() {
       await fetchFoodList();
-      if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
-        await loadCardData(localStorage.getItem("token"));
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        await loadCardData(storedToken);
       }
     }
     loadData();
@@ -96,6 +105,10 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    searchQuery,
+    setSearchQuery,
+    admin,
+    setAdmin,
   };
   return (
     <StoreContext.Provider value={contextValue}>

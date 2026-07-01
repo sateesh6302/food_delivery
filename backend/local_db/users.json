@@ -1,0 +1,16 @@
+[
+  {
+    "name": "test2",
+    "email": "test2@example.com",
+    "password": "$2b$10$c2I/wf6u8VV9bh5fG9fliug0xP/hZmXXTVuetCVXH9DErhFHgxvVy",
+    "role": "user",
+    "_id": "1782823969020"
+  },
+  {
+    "name": "test3",
+    "email": "test3@example.com",
+    "password": "$2b$10$9M4/mM40QCjfryrM5Tg87usNGvM4a6MNNe30sa9FhR.ZXvRC4lukG",
+    "role": "user",
+    "_id": "1782836874752"
+  }
+]

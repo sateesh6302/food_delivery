@@ -1,130 +1,103 @@
-# TOMATO - Food Ordering Website
+# Tomato - Premium MERN Stack Food Delivery & Admin Panel
 
-This repository hosts the source code for TOMATO, a dynamic food ordering website built with the MERN Stack. It offers a user-friendly platform for seamless online food ordering.
+This repository hosts the source code for **Tomato**, a dynamic, feature-rich online food ordering and restaurant management platform built with the MERN (MongoDB, Express.js, React, Node.js) Stack.
 
-## Demo
+We have unified the client web application and the restaurant administration panel into a single frontend project to run on a single localhost port, connected it securely to MongoDB Atlas, and implemented premium UX improvements.
 
-- User Panel: [https://food-delivery-frontend-s2l9.onrender.com/](https://food-delivery-frontend-s2l9.onrender.com/)
-- Admin Panel: [https://food-delivery-admin-wrme.onrender.com/](https://food-delivery-admin-wrme.onrender.com/)
+---
 
-## Features
+## 🌟 Key Updates & Improvements
 
-- User Panel
-- Admin Panel
-- JWT Authentication
-- Password Hashing with Bcrypt
-- Stripe Payment Integration
-- Login/Signup
-- Logout
-- Add to Cart
-- Place Order
-- Order Management
-- Products Management
-- Filter Food Products
-- Login/Signup
-- Authenticated APIs
-- REST APIs
-- Role-Based Identification
-- Beautiful Alerts
+### 1. Unified Front-End Application
+* **One Port for Everything**: Previously, the user site ran on `5173` and the admin panel ran on `5174`. They have now been unified:
+  - **User Web Application**: Access at `http://localhost:5173/`
+  - **Admin Panel Dashboard**: Access at `http://localhost:5173/admin`
+* **Shared Context**: Shared shopping cart context, API handlers, and authentication states across both panels for seamless performance.
 
-## Screenshots
+### 2. High-Performance Password Hashing
+* **Bcrypt Optimization**: Optimized `.env` configurations (setting `SALT=10`) to eliminate high-CPU hashing hangs on registration. Passwords are now hashed in milliseconds.
 
-![Hero](https://i.ibb.co/59cwY75/food-hero.png)
-- Hero Section
+### 3. Direct MongoDB Atlas Connection (Bypassing DNS SRV Issues)
+* **Direct Replica-Set Mapping**: Bypasses local network port 53 DNS SRV blocks by connecting directly to the MongoDB Atlas nodes.
+* **Forced IPv4 Preference**: Automatically overrides Node's DNS resolving order (`dns.setDefaultResultOrder("ipv4first")`) to solve connection timeouts on IPv6-only network layers.
+* **Robust Environment Loader**: Configured `dotenv` with path resolution to load `.env` correctly from any execution folder.
+* **Local Fallback Database**: Includes an automatic fallback to a local JSON file database if the network goes completely offline.
 
-![Products](https://i.ibb.co/JnNQPyQ/food-products.png)
-- Products Section
+### 4. Unified Full-Page Login & Route Guards
+* **Role selector capsules**: Switched from pop-ups to a premium full-page login screen with toggles for **Customer** and **Restaurant Admin** roles.
+* **Automatic switch on registration**: The signup form registers the user, shows a success notification, and immediately switches back to the login state to allow manual sign-in.
+* **Silent Guards & Redirects**:
+  - Unauthenticated guests visiting the homepage `localhost:5173` are silently redirected to `/login`.
+  - Unauthenticated guests visiting `/admin` are silently redirected to `/login` with the Admin tab auto-selected.
+  - Standard customer users trying to access `/admin` are shown an explicit `Access Denied` notification.
 
-![Cart](https://i.ibb.co/t2LrQ8p/food-cart.png)
-- Cart Page
+### 5. Shopping Cart Label Refinement
+* Swapped the simple `x` in the cart lists for a beautifully styled **"Cancel"** action button.
+* Adjusted layout grid columns to give the cancel option adequate spacing without wrapping.
 
-![Login](https://i.ibb.co/s6PgwkZ/food-login.png)
-- Login Popup
+### 6. Synchronous Authentication & State Fixes
+* Preserves state synchronously from storage on launch, preventing page flashes or login loops on hard browser refreshes.
+* Automatically resets active cart indicators and states in the navbar immediately upon logout.
 
-## Run Locally
+### 7. Modernized Admin Header Layout
+* Replaced the centered "Logout" link and static avatar with a hoverable **profile dropdown menu** in the top-right corner.
+* Contains a clean **Logout** link that cleans up the session and redirects directly back to the `/login` page.
 
-Clone the project
+---
 
-```bash
-    git clone https://github.com/Mshandev/Food-Delivery
+## 🛠️ Tech Stack
+* **Frontend**: React (Vite), React Router DOM v6, React Toastify, CSS
+* **Backend**: Node.js, Express.js, JWT, Bcrypt, Multer
+* **Database**: MongoDB Atlas (with local file database fallback)
+* **Payments**: Stripe Integration
+
+---
+
+## 🚀 How to Run Locally
+
+### 1. Project Structure
 ```
-Go to the project directory
-
-```bash
-    cd Food-Delivery
-```
-Install dependencies (frontend)
-
-```bash
-    cd frontend
-    npm install
-```
-Install dependencies (admin)
-
-```bash
-    cd admin
-    npm install
-```
-Install dependencies (backend)
-
-```bash
-    cd backend
-    npm install
-```
-Setup Environment Vaiables
-
-```Make .env file in "backend" folder and store environment Variables
-  JWT_SECRET=YOUR_SECRET_TEXT
-  SALT=YOUR_SALT_VALUE
-  MONGO_URL=YOUR_DATABASE_URL
-  STRIPE_SECRET_KEY=YOUR_KEY
- ```
-
-Setup the Frontend and Backend URL
-   - App.jsx in Admin folder
-      const url = YOUR_BACKEND_URL
-     
-  - StoreContext.js in Frontend folder
-      const url = YOUR_BACKEND_URL
-
-  - orderController in Backend folder
-      const frontend_url = YOUR_FRONTEND_URL 
-
-Start the Backend server
-
-```bash
-    nodemon server.js
+Food-Delivery/
+├── backend/       # Express API Server (Port 4000)
+└── frontend/      # Unified React Client + Admin App (Port 5173)
 ```
 
-Start the Frontend server
-
+### 2. Install Dependencies
+Run `npm install` inside both directories:
 ```bash
-    npm start
+# Frontend
+cd frontend
+npm install
+
+# Backend
+cd ../backend
+npm install
 ```
 
-Start the Backend server
-
-```bash
-    npm start
+### 3. Configure the Environment
+Create a `.env` file inside the `backend` folder:
+```env
+JWT_SECRET=your_jwt_secret_key
+SALT=10
+MONGO_URL=mongodb://sateesh6302_db_user:sateeshmlgs630211@ac-cnhg3ee-shard-00-00.kcajood.mongodb.net:27017,ac-cnhg3ee-shard-00-01.kcajood.mongodb.net:27017,ac-cnhg3ee-shard-00-02.kcajood.mongodb.net:27017/tomato?ssl=true&replicaSet=atlas-ogrb7n-shard-0&authSource=admin
+STRIPE_SECRET_KEY=your_stripe_secret_key
+PORT=4000
 ```
-## Tech Stack
-* [React](https://reactjs.org/)
-* [Node.js](https://nodejs.org/en)
-* [Express.js](https://expressjs.com/)
-* [Mongodb](https://www.mongodb.com/)
-* [Stripe](https://stripe.com/)
-* [JWT-Authentication](https://jwt.io/introduction)
-* [Multer](https://www.npmjs.com/package/multer)
 
-## Deployment
+### 4. Start the Application
 
-The application is deployed on Render.
+#### Start the Backend Server
+```bash
+cd backend
+npm run start
+```
+*Console should log:*
+`🟢 [Ready] MongoDB Atlas is active and listening for requests!`
 
-## Contributing
-
-Contributions are always welcome!
-Just raise an issue, and we will discuss it.
-
-## Feedback
-
-If you have any feedback, please reach out to me [here](https://www.linkedin.com/in/muhammad-shan-full-stack-developer/)
+#### Start the Frontend Client + Admin Server
+```bash
+cd frontend
+npm run dev
+```
+*Console should log:*
+`➜  Local:   http://localhost:5173/`

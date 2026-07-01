@@ -89,6 +89,40 @@
 .nav-profile-dropdown li:hover{
     color: tomato;
 }
+.navbar-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 50px;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+.navbar-search input {
+    width: 0;
+    opacity: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    color: #49557e;
+}
+.navbar-search.active {
+    background-color: #fff4f2;
+    border-color: tomato;
+}
+.navbar-search.active input {
+    width: 140px;
+    opacity: 1;
+}
+.navbar-search img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.navbar-search img:hover {
+    transform: scale(1.1);
+}
 @media (max-width:1050px) {
     .navbar .logo{
         width: 140px;
