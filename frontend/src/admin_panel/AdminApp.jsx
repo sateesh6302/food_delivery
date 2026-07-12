@@ -10,8 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { StoreContext } from "../context/StoreContext.jsx";
 
 const AdminApp = () => {
-  const url = ["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:4000" : "https://food-delivery-backend-5b6g.onrender.com";
-  const { admin, token } = useContext(StoreContext);
+  const { admin, token, url } = useContext(StoreContext);
   const navigate = useNavigate();
 
   useEffect(() => {

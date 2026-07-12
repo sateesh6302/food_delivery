@@ -7,7 +7,7 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = ["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:4000" : "https://food-delivery-backend-5b6g.onrender.com";
+  const url = ["localhost", "127.0.0.1"].includes(window.location.hostname) || window.location.hostname.match(/^\d+\.\d+\.\d+\.\d+$/) ? `http://${window.location.hostname}:4000` : "https://food-delivery-backend-5b6g.onrender.com";
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [food_list, setFoodList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");

@@ -7,7 +7,9 @@ const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SEC
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = window.location.hostname === "localhost" ? "http://localhost:5173" : "https://food-delivery-frontend-s2l9.onrender.com";
+  const host = req.get("host");
+  const hostname = host ? host.split(":")[0] : "localhost";
+  const frontend_url = ["localhost", "127.0.0.1"].includes(hostname) ? "http://localhost:5173" : `http://${hostname}`;
   try {
     let newOrder;
     if (global.useLocalDB) {
