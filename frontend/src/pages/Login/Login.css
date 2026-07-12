@@ -187,3 +187,32 @@
     transform: translateY(0);
   }
 }
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 45px !important;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.password-toggle-icon:hover {
+  color: #ff4a0e;
+}
