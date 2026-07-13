@@ -23,8 +23,17 @@ const Navbar = () => {
   }
   return (
     <div className="navbar">
-      <Link to="/">
+      <Link to="/" className="logo-animation-container">
         <img src={assets.logo} alt="" className="logo" />
+        <div className="delivery-rider-animation">
+          <img src={assets.rider_sprite} alt="Rider" className="rider-bike-img" />
+          <div className="glowing-trail"></div>
+          <div className="dust-particles">
+            <span className="dust p1"></span>
+            <span className="dust p2"></span>
+            <span className="dust p3"></span>
+          </div>
+        </div>
       </Link>
       <ul className="navbar-menu">
         <Link
