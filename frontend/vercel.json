@@ -1,20 +1,41 @@
 {
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "http://13.51.171.228:4000/api/$1"
+      "source": "/api/:path*",
+      "destination": "http://13.51.171.228:4000/api/:path*"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "http://13.51.171.228:4000/images/$1"
+      "source": "/images/:path*",
+      "destination": "http://13.51.171.228:4000/images/:path*"
     },
     {
-      "handle": "filesystem"
+      "source": "/login",
+      "destination": "/index.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/cart",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/order",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/verify",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/myorders",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/index.html"
     }
   ]
 }
