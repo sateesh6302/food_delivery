@@ -64,12 +64,8 @@ const placeOrder = async (req, res) => {
       console.error("Failed to fetch user phone or send SMS:", err.message);
     }
 
-    // Mock payment if stripe is not configured or in local mode
-    if (!stripe || global.useLocalDB) {
-      console.log("Stripe not configured or using Local DB. Mocking payment redirect.");
-      // Redirect directly to verify success
-      return res.json({ success: true, session_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}` });
-    }
+    // Direct success return for direct order placement checkout flow
+    return res.json({ success: true, message: "The order placed is successfully", orderId: newOrder._id });
 
     const line_items = req.body.items.map((item) => ({
       price_data: {
