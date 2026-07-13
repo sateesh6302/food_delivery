@@ -8,6 +8,10 @@
     {
       "source": "/images/:path*",
       "destination": "http://13.51.171.228:4000/images/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ]
 }
