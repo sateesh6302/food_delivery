@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 const PlaceOrder = () => {
   const navigate= useNavigate();
 
-  const { getTotalCartAmount, token, food_list, cartItems, url } =
+  const { getTotalCartAmount, token, food_list, cartItems, url, setCartItems } =
     useContext(StoreContext);
   const [data, setData] = useState({
     firstName: "",
@@ -19,7 +19,7 @@ const PlaceOrder = () => {
     state: "",
     zipcode: "",
     country: "",
-    phone: "",
+    phone: localStorage.getItem("phone") || "",
   });
 
   const onChangeHandler = (event) => {
@@ -46,8 +46,19 @@ const PlaceOrder = () => {
     
     let response= await axios.post(url+"/api/order/place",orderData,{headers:{token}});
     if(response.data.success){
-      const {session_url}=response.data;
-      window.location.replace(session_url);
+      toast.success("The order placed is successfully");
+      setCartItems({});
+      setData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        street: "",
+        city: "",
+        state: "",
+        zipcode: "",
+        country: "",
+        phone: localStorage.getItem("phone") || "",
+      });
     }else{
       toast.error("Errors!")
     }
@@ -167,7 +178,7 @@ const PlaceOrder = () => {
               </b>
             </div>
           </div>
-          <button type="submit">PROCEED TO PAYMENT</button>
+          <button type="submit">PLACE THE ORDER</button>
         </div>
       </div>
     </form>

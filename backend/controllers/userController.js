@@ -21,7 +21,7 @@ const loginUser = async (req, res) => {
     }
     const role=user.role;
     const token = createToken(user._id);
-    res.json({ success: true, token,role });
+    res.json({ success: true, token, role, phone: user.phone || "" });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
@@ -37,7 +37,7 @@ const createToken = (id) => {
 // register user
 
 const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, phone } = req.body;
   try {
     // checking user is already exist
     const exists = global.useLocalDB
@@ -69,7 +69,8 @@ const registerUser = async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        role: role || "user"
+        role: role || "user",
+        phone: phone || ""
       });
     } else {
       const newUser = new userModel({
@@ -77,11 +78,12 @@ const registerUser = async (req, res) => {
         email,
         password: hashedPassword,
         role: role || "user",
+        phone: phone || ""
       });
       user = await newUser.save();
     }
     const token = createToken(user._id);
-    res.json({ success: true, token, role: user.role });
+    res.json({ success: true, token, role: user.role, phone: user.phone || "" });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });

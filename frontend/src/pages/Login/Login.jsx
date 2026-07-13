@@ -31,6 +31,7 @@ const Login = () => {
     name: "",
     email: "",
     password: "",
+    phone: "",
   });
 
   // Auto-select Admin tab if redirected from Admin panel
@@ -93,6 +94,7 @@ const Login = () => {
 
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("phone", response.data.phone || "");
           setAdmin(isAdminUser);
           localStorage.setItem("admin", isAdminUser ? "true" : "false");
           
@@ -147,17 +149,30 @@ const Login = () => {
           
           <div className="login-inputs">
             {currentState === "Sign Up" && (
-              <div className="input-group">
-                <label>Name</label>
-                <input
-                  name="name"
-                  onChange={onChangeHandler}
-                  value={data.name}
-                  type="text"
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
+              <>
+                <div className="input-group">
+                  <label>Name</label>
+                  <input
+                    name="name"
+                    onChange={onChangeHandler}
+                    value={data.name}
+                    type="text"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Mobile Number</label>
+                  <input
+                    name="phone"
+                    onChange={onChangeHandler}
+                    value={data.phone}
+                    type="tel"
+                    placeholder="Enter your mobile number"
+                    required
+                  />
+                </div>
+              </>
             )}
             
             <div className="input-group">

@@ -2,8 +2,26 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from "stripe";
 import { localDb } from "../config/localDb.js";
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
+const snsClient = new SNSClient({ region: "eu-north-1" });
+
+const sendSMS = async (phoneNumber, message) => {
+  try {
+    if (!phoneNumber) return;
+    const cleanPhone = phoneNumber.startsWith("+") ? phoneNumber : `+${phoneNumber}`;
+    console.log(`Sending SMS to ${cleanPhone}: ${message}`);
+    const command = new PublishCommand({
+      PhoneNumber: cleanPhone,
+      Message: message,
+    });
+    const response = await snsClient.send(command);
+    console.log("SMS sent successfully, MessageId:", response.MessageId);
+  } catch (error) {
+    console.error("Error sending SMS via SNS:", error.message);
+  }
+};
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
@@ -32,6 +50,18 @@ const placeOrder = async (req, res) => {
       });
       await newOrder.save();
       await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+    }
+
+    // Send SMS alert to user's registered phone number
+    try {
+      const userData = global.useLocalDB
+        ? localDb.findById("users", req.body.userId)
+        : await userModel.findById(req.body.userId);
+      if (userData && userData.phone) {
+        await sendSMS(userData.phone, "The order placed is successfully");
+      }
+    } catch (err) {
+      console.error("Failed to fetch user phone or send SMS:", err.message);
     }
 
     // Mock payment if stripe is not configured or in local mode
