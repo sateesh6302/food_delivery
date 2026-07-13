@@ -10,7 +10,7 @@
       "destination": "http://13.51.171.228:4000/images/:path*"
     },
     {
-      "source": "/((?!api|images|assets|static|favicon.ico).*)",
+      "source": "/:path*",
       "destination": "/frontend/index.html"
     }
   ]
