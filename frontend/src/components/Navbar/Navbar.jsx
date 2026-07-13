@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <Link to="/">
-        <img src={assets.logo} alt="" className="logo" />
+        <div className="logo-text">Tomato<span>Express</span></div>
       </Link>
       <ul className="navbar-menu">
         <Link

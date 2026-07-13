@@ -38,3 +38,36 @@ a{
 .cursor{
   cursor: pointer;
 }
+
+/* Text Logo styles */
+.logo-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #ff4321;
+  letter-spacing: -1px;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.logo-text span {
+  color: #49557e;
+  font-weight: 400;
+  margin-left: 6px;
+}
+.footer .logo-text span {
+  color: #ffffff;
+}
+.logo-text .admin-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #ff4321;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  letter-spacing: 0.5px;
+}
